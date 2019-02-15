@@ -129,9 +129,9 @@ class GameManager:
             for card in player.hand:
                 if card.value == 11:
                     card.value = 1
-                    player.Score.hidden_score -= 10
+                    player.Score.hidden_score = -10
                     if not card.hidden:
-                        player.Score.score -= 10
+                        player.Score.score = -10
                 if player.Score.hidden_score <= 21:
                     return False
             print("Perdiste: {0}".format(player.Score.hidden_score))
