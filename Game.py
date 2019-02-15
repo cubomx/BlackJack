@@ -81,9 +81,9 @@ class Player:
     @hand.setter
     def hand(self, card):
         self.__hand.append(card)
-        self.Score.hidden_score += card.value
+        self.Score.hidden_score = card.value
         if len(self.hand) > 1:
-            self.Score.score += card.value
+            self.Score.score = card.value
 
 
 class User(Player):
@@ -118,11 +118,10 @@ class GameManager:
         self.hand.append(card)
 
     def who_won(self, player, croupier):
+        self.winner = True
         if player.Score.hidden_score > croupier.Score.hidden_score:
-            self.winner = player
             return 'Player won'
         else:
-            self.winner = croupier
             return 'Crupier won'
 
     def busts(self, player):
@@ -135,6 +134,7 @@ class GameManager:
                         player.Score.score -= 10
                 if player.Score.hidden_score <= 21:
                     return False
+            print("Perdiste: {0}".format(player.Score.hidden_score))
             return True
         return False
 
@@ -158,8 +158,8 @@ class Crupier(Player):
 
     def card_available(self, cards, type, game_manager, player):
         card = self.give_aleatory_card(cards, type)
-        '''while card in game_manager.hand:
-            card = self.give_aleatory_card(cards, type)'''
+        while card in game_manager.hand:
+            card = self.give_aleatory_card(cards, type)
         player.hand = card
         game_manager.hand = card
 
@@ -170,23 +170,24 @@ class Crupier(Player):
             player.hand[0].hidden = True
 
     def play_another(self, player, cards, type, game_manager):
-        while player.Score.score < 17:
+        while player.Score.hidden_score < 17:
             self.card_available(cards, type, game_manager, self)
 
     def ask_player(self, player, cards, type):
         choice = 'c'
-        while choice != 'a' and choice != 's':
-            choice = str(input('Do you want another(a) or want to stand(s)?'))
-            if choice == 'a':
-                player.hand = self.give_aleatory_card(cards, type)
-            elif choice == 's':
-                player.stand = True
+        while choice != 'a' and choice != 'h':
+            choice = str(input('Do you want another(a) or want to stand(h)?'))
+
+        if choice == 'a':
+            player.hand = self.give_aleatory_card(cards, type)
+        elif choice == 'h':
+            player.stand = True
 
 
 def aleatory_card():
     cards = ['Ace']
     others = ["Jack", "Queen", "King"]
-    for i in range(1, 11):
+    for i in range(2, 11):
         cards.append(i)
     cards += others
     return cards
@@ -194,8 +195,8 @@ def aleatory_card():
 
 def show_cards(player):
     for card in player.hand:
-        print(card.name)
-    print("\n\n")
+        print(card.name + " {0}".format(card.value))
+    print("\n")
 
 
 def main():
@@ -216,14 +217,19 @@ def main():
             show_cards(user)
             show_cards(crupier)
             if game_manager.busts(user):
-                print("Busts\nCrupier wins")
-                game_manager.winner = crupier
-            if user.stand and game_manager.winner is not None:
-                crupier.play_another(user, cards, type, game_manager)
+                print("Busts\nCrupier won")
+                game_manager.winner = True
+            if user.stand and game_manager.winner is not True:
+                crupier.play_another(crupier, cards, type, game_manager)
+                show_cards(user)
                 show_cards(crupier)
-                print(game_manager.who_won(user, crupier))
+                if game_manager.busts(crupier):
+                    print("Crupier busts\nPlayer won")
+                    game_manager.winner = True
+                else:
+                    print(game_manager.who_won(user, crupier))
 
-            if game_manager.winner is not None:
+            if game_manager.winner:
                 break
         break
 
