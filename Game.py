@@ -130,6 +130,7 @@ class GameManager:
                 if card.value == 11:
                     card.value = 1
                     player.Score.hidden_score = -10
+                    print("{0}  {1}".format(card.value, player.Score.hidden_score))
                     if not card.hidden:
                         player.Score.score = -10
                 if player.Score.hidden_score <= 21:
@@ -206,6 +207,11 @@ def show_cards(player):
     print("\n")
 
 
+def show_game(player, crupier):
+    show_cards(player)
+    show_cards(crupier)
+
+
 def main():
     user = User(str(input()))
     crupier = Crupier('Crupier')
@@ -217,19 +223,16 @@ def main():
         crupier.give_entry(user, cards, type, game_manager)
         # Crupier gives himself cards
         crupier.give_entry(crupier, cards, type, game_manager)
-        show_cards(user)
-        show_cards(crupier)
+        show_game(user, crupier)
         while True:
             crupier.ask_player(user, cards, type)
-            show_cards(user)
-            show_cards(crupier)
+            show_game(user, crupier)
             if game_manager.busts(user):
                 print("Busts\nCrupier won")
                 game_manager.winner = True
             if user.stand and game_manager.winner is not True:
                 crupier.play_another(crupier, cards, type, game_manager)
-                show_cards(user)
-                show_cards(crupier)
+                show_game(user, crupier)
                 if game_manager.busts(crupier):
                     print("Crupier busts\nPlayer won")
                     game_manager.winner = True
