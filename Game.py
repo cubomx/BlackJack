@@ -156,10 +156,17 @@ class Crupier(Player):
         card = Card(str(cards[rand_card]) + " of " + type[rand_type], value)
         return card
 
+    def card_in_deck(self, game_manager, card):
+        for i in game_manager.hand:
+            if i.name == card.name:
+                return True
+        return False
+
     def card_available(self, cards, type, game_manager, player):
-        card = self.give_aleatory_card(cards, type)
-        while card in game_manager.hand:
+        in_deck = True
+        while in_deck:
             card = self.give_aleatory_card(cards, type)
+            in_deck = self.card_in_deck(game_manager, card)
         player.hand = card
         game_manager.hand = card
 
