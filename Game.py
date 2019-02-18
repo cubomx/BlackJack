@@ -107,8 +107,6 @@ class GameManager:
         self.winner = None
         self.__hand = list()
 
-
-
     @property
     def hand(self):
         return self.__hand
@@ -116,20 +114,20 @@ class GameManager:
     @hand.setter
     def hand(self, card):
         self.hand.append(card)
-
+''' Decides if the player has more points'''
     def who_won(self, player, croupier):
         self.winner = True
         if player.Score.hidden_score > croupier.Score.hidden_score:
             return 'Player won'
         else:
             return 'Crupier won'
-
+''' Sees if the player/crupier has more than 21 points '''
     def busts(self, player):
         if player.Score.hidden_score > 21:
             for card in player.hand:
-                if card.value == 11:
+                if card.value == 11:''' Sees if the player/crupier has an Ace Card'''
                     card.value = 1
-                    player.Score.hidden_score = -10
+                    player.Score.hidden_score = -10 ''' If the ace card is 1, so remove 10 points'''
                     if not card.hidden:
                         player.Score.score = -10
                 if player.Score.hidden_score <= 21:
@@ -145,7 +143,7 @@ class Crupier(Player):
 
     @staticmethod
     def give_aleatory_card(cards, type):
-        rand_card = randint(0, len(cards) - 1)
+        rand_card = randint(0, len(cards) - 1)''' Two aleatory numbers for choosing some card from some kind '''
         rand_type = randint(0, len(type) - 1)
         if rand_card > 9:
             value = 10
@@ -155,44 +153,43 @@ class Crupier(Player):
             value = rand_card+1
         card = Card(str(cards[rand_card]) + " of " + type[rand_type], value)
         return card
-
+    ''' Checks if the card isn't in the game '''
     def card_available(self, cards, type, game_manager, player):
         card = self.give_aleatory_card(cards, type)
         while card in game_manager.hand:
             card = self.give_aleatory_card(cards, type)
         player.hand = card
         game_manager.hand = card
-
+    '''  Gives the initial cards to both'''
     def give_entry(self, player, cards, type, game_manager):
         for i in range(0, 2):
             self.card_available(cards, type, game_manager, player)
         if isinstance(player, Crupier):
             player.hand[0].hidden = True
-
+    ''' Gives another card while the points of the crupier until it haves 17'''
     def play_another(self, player, cards, type, game_manager):
         while player.Score.hidden_score < 17:
             self.card_available(cards, type, game_manager, self)
-
+   '''  Asks if the player wants to still asking for cards'''
     def ask_player(self, player, cards, type):
         choice = 'c'
         while choice != 'a' and choice != 'h':
             choice = str(input('Do you want another(a) or want to stand(h)?'))
-
         if choice == 'a':
             player.hand = self.give_aleatory_card(cards, type)
         elif choice == 'h':
             player.stand = True
 
-
+''' Creating the array of all cards'''
 def aleatory_card():
     cards = ['Ace']
     others = ["Jack", "Queen", "King"]
-    for i in range(2, 11):
+    for i in range(2, 11):''' Creating the cards of numbers into the array'''
         cards.append(i)
     cards += others
     return cards
 
-
+''' Showing the user all cards in board '''
 def show_cards(player):
     for card in player.hand:
         print(card.name + " {0}".format(card.value))
@@ -216,14 +213,14 @@ def main():
             crupier.ask_player(user, cards, type)
             show_cards(user)
             show_cards(crupier)
-            if game_manager.busts(user):
+            if game_manager.busts(user):''' If the user has more than 21 points'''
                 print("Busts\nCrupier won")
                 game_manager.winner = True
             if user.stand and game_manager.winner is not True:
-                crupier.play_another(crupier, cards, type, game_manager)
+                crupier.play_another(crupier, cards, type, game_manager)''' The crupier plays more cards'''
                 show_cards(user)
                 show_cards(crupier)
-                if game_manager.busts(crupier):
+                if game_manager.busts(crupier): ''' If the crupier has more than 21 points '''
                     print("Crupier busts\nPlayer won")
                     game_manager.winner = True
                 else:
