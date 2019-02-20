@@ -57,10 +57,19 @@ class Score:
 
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, mount):
         self.__name = name
         self.__hand = list()
         self.__Score = Score()
+        self.__mount = mount
+
+    @property
+    def mount(self):
+        return self.__mount
+
+    @mount.setter
+    def mount(self, mount):
+        self.__mount = mount
 
     @property
     def Score(self):
@@ -81,15 +90,32 @@ class Player:
     @hand.setter
     def hand(self, card):
         self.__hand.append(card)
-        self.Score.hidden_score = card.value
-        if len(self.hand) > 1:
-            self.Score.score = card.value
+        if isinstance(card, Card):
+            self.Score.hidden_score = card.value
+            if len(self.hand) > 1:
+                self.Score.score = card.value
+        else:
+            self.__hand = card
+            self.Score.hidden_score = -self.Score.hidden_score
+            self.Score.score = -self.Score.score
+            print("{0}  {1}".format(self.Score.hidden_score, self.Score.score))
 
 
 class User(Player):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, mount=10000):
+        super().__init__(name, mount)
         self.__stand = False
+
+    def push(self):
+        print('mount: ' + (str)(self.mount))
+        b = False
+        while b == False:
+            push = (int)(input('How much do you want to push: '))
+            if push<=self.mount:
+                self.mount = self.mount - push
+                return push
+
+    #def mountPush(self):
 
 
     @property
@@ -106,8 +132,6 @@ class GameManager:
         self.__name = 'Manager'
         self.winner = None
         self.__hand = list()
-
-
 
     @property
     def hand(self):
@@ -130,7 +154,6 @@ class GameManager:
                 if card.value == 11:
                     card.value = 1
                     player.Score.hidden_score = -10
-                    print("{0}  {1}".format(card.value, player.Score.hidden_score))
                     if not card.hidden:
                         player.Score.score = -10
                 if player.Score.hidden_score <= 21:
@@ -139,10 +162,14 @@ class GameManager:
             return True
         return False
 
+    def cleanHands(self, player, crupier):
+        self.hand = list()
+        player.hand = list()
+        crupier.hand = list()
 
 class Crupier(Player):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, mount=100000000):
+        super().__init__(name, mount)
 
     @staticmethod
     def give_aleatory_card(cards, type):
@@ -157,17 +184,10 @@ class Crupier(Player):
         card = Card(str(cards[rand_card]) + " of " + type[rand_type], value)
         return card
 
-    def card_in_deck(self, game_manager, card):
-        for i in game_manager.hand:
-            if i.name == card.name:
-                return True
-        return False
-
     def card_available(self, cards, type, game_manager, player):
-        in_deck = True
-        while in_deck:
+        card = self.give_aleatory_card(cards, type)
+        while card in game_manager.hand:
             card = self.give_aleatory_card(cards, type)
-            in_deck = self.card_in_deck(game_manager, card)
         player.hand = card
         game_manager.hand = card
 
@@ -203,17 +223,18 @@ def aleatory_card():
 
 def show_cards(player):
     for card in player.hand:
-        print(card.name + " {0}".format(card.value))
+        print(card.name)
     print("\n")
 
-
-def show_game(player, crupier):
-    show_cards(player)
-    show_cards(crupier)
-
+def continuePlaying():
+    play = True
+    option = input("Do you want to continue playing: (y) (n)" + "\n ")
+    if option.lower() == "n":
+        play = False
+    return play
 
 def main():
-    user = User(str(input()))
+    user = User(str(input('Enter your name: \n')))
     crupier = Crupier('Crupier')
     type = ["Clovers", "Pikes", "Diamonds", "Hearts"]
     cards = aleatory_card()
@@ -223,26 +244,35 @@ def main():
         crupier.give_entry(user, cards, type, game_manager)
         # Crupier gives himself cards
         crupier.give_entry(crupier, cards, type, game_manager)
-        show_game(user, crupier)
+        show_cards(user)
+        show_cards(crupier)
+        user.push()
         while True:
             crupier.ask_player(user, cards, type)
-            show_game(user, crupier)
+            show_cards(user)
+            show_cards(crupier)
             if game_manager.busts(user):
                 print("Busts\nCrupier won")
                 game_manager.winner = True
             if user.stand and game_manager.winner is not True:
                 crupier.play_another(crupier, cards, type, game_manager)
-                show_game(user, crupier)
+                show_cards(user)
+                show_cards(crupier)
                 if game_manager.busts(crupier):
                     print("Crupier busts\nPlayer won")
+                    print("mount: " + (str)(user.mount))
                     game_manager.winner = True
                 else:
                     print(game_manager.who_won(user, crupier))
 
             if game_manager.winner:
                 break
-        break
+        if not continuePlaying():
+            break
+        else:
+            game_manager.cleanHands(user, crupier)
 
 
 if __name__ == '__main__':
     main()
+

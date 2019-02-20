@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2a57ca3-752e-40a5-841e-2087eb2d1aa1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Game.py" beforeDir="false" afterPath="$PROJECT_DIR$/Game.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -18,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1388">
-              <caret line="132" column="83" selection-start-line="132" selection-start-column="83" selection-end-line="132" selection-end-column="83" />
+            <state>
+              <caret selection-end-line="278" />
             </state>
           </provider>
         </entry>
@@ -36,17 +37,18 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="716" />
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="x" value="67" />
     <option name="y" value="25" />
     <option name="width" value="650" />
-    <option name="height" value="741" />
+    <option name="height" value="743" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -58,7 +60,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -85,6 +86,9 @@
       <module name="BlackJack" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -118,12 +122,15 @@
       <updated>1550181459269</updated>
       <workItem from="1550181464518" duration="6831000" />
       <workItem from="1550188494127" duration="6088000" />
-      <workItem from="1550238174413" duration="564000" />
+      <workItem from="1550238174413" duration="1863000" />
+      <workItem from="1550265363159" duration="749000" />
+      <workItem from="1550676505805" duration="699000" />
+      <workItem from="1550677229387" duration="669000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13483000" />
+    <option name="totallyTimeSpent" value="16899000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -135,9 +142,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="1299" height="743" extended-state="6" />
+    <frame x="67" y="25" width="650" height="743" extended-state="4" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25778133" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.5629139" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -163,17 +171,6 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Game.py</url>
-          <line>227</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
     <entry file="file:///usr/lib/python3.6/random.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -198,8 +195,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1388">
-          <caret line="132" column="83" selection-start-line="132" selection-start-column="83" selection-end-line="132" selection-end-column="83" />
+        <state>
+          <caret selection-end-line="278" />
         </state>
       </provider>
     </entry>
