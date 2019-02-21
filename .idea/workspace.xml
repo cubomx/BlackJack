@@ -19,8 +19,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="278" />
+            <state relative-caret-position="-593">
+              <caret line="253" column="24" selection-start-line="253" selection-start-column="24" selection-end-line="253" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -37,11 +37,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="67" />
     <option name="y" value="25" />
     <option name="width" value="650" />
-    <option name="height" value="743" />
+    <option name="height" value="741" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -86,9 +86,6 @@
       <module name="BlackJack" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -126,11 +123,14 @@
       <workItem from="1550265363159" duration="749000" />
       <workItem from="1550676505805" duration="699000" />
       <workItem from="1550677229387" duration="669000" />
+      <workItem from="1550700659207" duration="90000" />
+      <workItem from="1550705806583" duration="865000" />
+      <workItem from="1550711612408" duration="1034000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16899000" />
+    <option name="totallyTimeSpent" value="18888000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -142,7 +142,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="25" width="650" height="743" extended-state="4" />
+    <frame x="67" y="25" width="1299" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.5629139" />
@@ -195,8 +195,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="278" />
+        <state relative-caret-position="-593">
+          <caret line="253" column="24" selection-start-line="253" selection-start-column="24" selection-end-line="253" selection-end-column="24" />
         </state>
       </provider>
     </entry>

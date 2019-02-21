@@ -62,6 +62,15 @@ class Player:
         self.__hand = list()
         self.__Score = Score()
         self.__mount = mount
+        self.__bet = 0
+
+    @property
+    def bet(self):
+        return self.__bet
+
+    @bet.setter
+    def bet(self, bet):
+        self.__bet = bet
 
     @property
     def mount(self):
@@ -108,15 +117,11 @@ class User(Player):
 
     def push(self):
         print('mount: ' + (str)(self.mount))
-        b = False
-        while b == False:
-            push = (int)(input('How much do you want to push: '))
-            if push<=self.mount:
-                self.mount = self.mount - push
-                return push
-
-    #def mountPush(self):
-
+        push = self.mount + 1
+        while push >= self.mount:
+            push = int(input('How much do you want to push: '))
+            if push <= self.mount:
+                self.bet = push
 
     @property
     def stand(self):
@@ -132,6 +137,18 @@ class GameManager:
         self.__name = 'Manager'
         self.winner = None
         self.__hand = list()
+        self.__cards = list()
+
+    @property
+    def cards(self):
+        return self.__cards
+
+    @cards.setter
+    def cards(self, card_name):
+        if isinstance(card_name, list):
+            self.__cards = []
+        else:
+            self.__cards.append(card_name)
 
     @property
     def hand(self):
@@ -139,13 +156,19 @@ class GameManager:
 
     @hand.setter
     def hand(self, card):
-        self.hand.append(card)
+        if isinstance(card, list):
+            self.cards = list()
+            self.__hand = []
+        else:
+            self.hand.append(card)
 
     def who_won(self, player, croupier):
         self.winner = True
-        if player.Score.hidden_score > croupier.Score.hidden_score:
+        if  croupier.Score.hidden_score < player.Score.hidden_score <= 21 or croupier.Score.hidden_score >21:
+            player.mount = player.mount + player.bet
             return 'Player won'
         else:
+            player.mount = player.mount - player.bet
             return 'Crupier won'
 
     def busts(self, player):
@@ -158,14 +181,17 @@ class GameManager:
                         player.Score.score = -10
                 if player.Score.hidden_score <= 21:
                     return False
-            print("Perdiste: {0}".format(player.Score.hidden_score))
+            print("Perdio {0}: {1}".format(player.name, player.Score.hidden_score))
             return True
         return False
 
     def cleanHands(self, player, crupier):
         self.hand = list()
         player.hand = list()
+        player.stand = False
+        self.winner = False
         crupier.hand = list()
+
 
 class Crupier(Player):
     def __init__(self, name, mount=100000000):
@@ -186,7 +212,7 @@ class Crupier(Player):
 
     def card_available(self, cards, type, game_manager, player):
         card = self.give_aleatory_card(cards, type)
-        while card in game_manager.hand:
+        while card.name in game_manager.cards:
             card = self.give_aleatory_card(cards, type)
         player.hand = card
         game_manager.hand = card
@@ -201,15 +227,17 @@ class Crupier(Player):
         while player.Score.hidden_score < 17:
             self.card_available(cards, type, game_manager, self)
 
-    def ask_player(self, player, cards, type):
+    def ask_player(self, player, cards, type, game_manager):
         choice = 'c'
-        while choice != 'a' and choice != 'h':
-            choice = str(input('Do you want another(a) or want to stand(h)?'))
+        while choice not in "ah":
+            choice = str(input('Do you want another(a) or want to stand(h)?')).lower()
 
         if choice == 'a':
             player.hand = self.give_aleatory_card(cards, type)
         elif choice == 'h':
+            print("hola")
             player.stand = True
+            game_manager.winner = False
 
 
 def aleatory_card():
@@ -226,12 +254,14 @@ def show_cards(player):
         print(card.name)
     print("\n")
 
+
 def continuePlaying():
     play = True
     option = input("Do you want to continue playing: (y) (n)" + "\n ")
     if option.lower() == "n":
         play = False
     return play
+
 
 def main():
     user = User(str(input('Enter your name: \n')))
@@ -248,25 +278,24 @@ def main():
         show_cards(crupier)
         user.push()
         while True:
-            crupier.ask_player(user, cards, type)
-            show_cards(user)
-            show_cards(crupier)
+            crupier.ask_player(user, cards, type, game_manager)
             if game_manager.busts(user):
-                print("Busts\nCrupier won")
+                print("Busts\n")
                 game_manager.winner = True
-            if user.stand and game_manager.winner is not True:
-                crupier.play_another(crupier, cards, type, game_manager)
-                show_cards(user)
-                show_cards(crupier)
-                if game_manager.busts(crupier):
-                    print("Crupier busts\nPlayer won")
-                    print("mount: " + (str)(user.mount))
-                    game_manager.winner = True
-                else:
-                    print(game_manager.who_won(user, crupier))
-
+            elif user.stand and game_manager.winner is not True:
+                while crupier.Score.hidden_score < 17:
+                    crupier.play_another(crupier, cards, type, game_manager)
+                    show_cards(user)
+                    show_cards(crupier)
+                    if game_manager.busts(crupier):
+                        game_manager.winner = True
+                        print("Crupier busts\n")
+                print(game_manager.who_won(user, crupier))
+                print("mount: " + str(user.mount))
             if game_manager.winner:
                 break
+            show_cards(user)
+            show_cards(crupier)
         if not continuePlaying():
             break
         else:
@@ -275,4 +304,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
