@@ -118,7 +118,8 @@ class User(Player):
     def push(self):
         print('mount: ' + (str)(self.mount))
         push = self.mount + 1
-        while push >= self.mount:
+		if
+        while 0 > push >= self.mount:
             push = int(input('How much do you want to push: '))
             if push <= self.mount:
                 self.bet = push
